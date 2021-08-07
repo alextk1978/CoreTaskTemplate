@@ -23,6 +23,7 @@ public class UserDaoJDBCImpl implements UserDao {
             "ENGINE = InnoDB " +
             "DEFAULT CHARACTER SET = utf8";
     public static final String DROP_TABLE = "DROP TABLE " + TABLE_NAME;
+    public static final String CLEAN_TABLE = "TRUNCATE TABLE " + TABLE_NAME;
 
     public void createUsersTable() {
         try (Connection connection = Util.getConnection();
@@ -37,15 +38,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        try (Connection connection = Util.getConnection();
-             Statement statement = connection.createStatement()){
-            boolean exists = connection.getMetaData().getTables(null, null, TABLE_NAME, null).next();
-            if (exists) {
-                statement.executeUpdate(DROP_TABLE);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        getConnectionAndExecute(DROP_TABLE);
     }
 
     public void saveUser(String name, String lastName, byte age) {
@@ -61,6 +54,18 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
+        getConnectionAndExecute(CLEAN_TABLE);
+    }
 
+    private void getConnectionAndExecute(String command) {
+        try (Connection connection = Util.getConnection();
+             Statement statement = connection.createStatement()){
+            boolean exists = connection.getMetaData().getTables(null, null, TABLE_NAME, null).next();
+            if (exists) {
+                statement.executeUpdate(command);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
