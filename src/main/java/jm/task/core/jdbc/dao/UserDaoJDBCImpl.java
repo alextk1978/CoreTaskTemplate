@@ -13,7 +13,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    public static final String TABLE_NAME = "`users`.`new_table`";
+    public static final String TABLE_NAME = "`users`.`users_table`";
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             "`id` INT NOT NULL AUTO_INCREMENT, " +
             "`name` VARCHAR(45) NOT NULL, " +
