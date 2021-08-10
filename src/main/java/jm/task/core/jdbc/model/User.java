@@ -62,6 +62,6 @@ public class User {
 
     @Override
     public String toString() {
-        return this.getName() + " " + this.lastName + ", возраст - " + this.getAge();
+        return this.getId() + " " + this.getName() + " " + this.lastName + ", возраст - " + this.getAge();
     }
 }

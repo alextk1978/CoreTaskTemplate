@@ -12,7 +12,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    public static final String TABLE_NAME = "`users`.`users_table`";
+    private static final String TABLE_NAME = "`users`.`users_table`";
 
     public void createUsersTable() {
         try (Connection connection = Util.getConnection();
@@ -53,6 +53,7 @@ public class UserDaoJDBCImpl implements UserDao {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User user = new User(rs.getString(2), rs.getString(3), rs.getByte(4));
+                user.setId(rs.getLong(1));
                 users.add(user);
             }
         } catch (SQLException e) {
