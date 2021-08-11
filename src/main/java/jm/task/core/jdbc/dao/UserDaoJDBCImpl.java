@@ -12,21 +12,14 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    private static final String TABLE_NAME = "`users`.`users_table`";
+    private static final String TABLE_NAME = "`testDB`.`User_Table`";
 
     public void createUsersTable() {
         try (Connection connection = Util.getConnection();
-            Statement statement = connection.createStatement()){
+             Statement statement = connection.createStatement()) {
             boolean exists = connection.getMetaData().getTables(null, null, TABLE_NAME, null).next();
             if (!exists) {
-                statement.executeUpdate("CREATE TABLE " + TABLE_NAME + " (" +
-                        "`id` INT NOT NULL AUTO_INCREMENT, " +
-                        "`name` VARCHAR(45) NOT NULL, " +
-                        "`lastName` VARCHAR(45) NULL, " +
-                        "`age` TINYINT(3) NULL, " +
-                        "PRIMARY KEY (`id`)) " +
-                        "ENGINE = InnoDB " +
-                        "DEFAULT CHARACTER SET = utf8");
+                statement.executeUpdate("CREATE TABLE `testDB`.`User_Table` (" + "`id` INT NOT NULL AUTO_INCREMENT, " + "`name` VARCHAR(45) NOT NULL, " + "`lastName` VARCHAR(45) NULL, " + "`age` TINYINT(3) NULL, " + "PRIMARY KEY (`id`)) " + "ENGINE = InnoDB " + "DEFAULT CHARACTER SET = utf8");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,7 +42,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try (Connection connection = Util.getConnection();
-             PreparedStatement ps = connection.prepareStatement("select * from " + TABLE_NAME)){
+             PreparedStatement ps = connection.prepareStatement("select * from " + TABLE_NAME)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User user = new User(rs.getString(2), rs.getString(3), rs.getByte(4));
@@ -68,7 +61,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     private void getConnectionAndExecute(String command) {
         try (Connection connection = Util.getConnection();
-             Statement statement = connection.createStatement()){
+             Statement statement = connection.createStatement()) {
             boolean exists = connection.getMetaData().getTables(null, null, TABLE_NAME, null).next();
             if (exists) {
                 statement.executeUpdate(command);
